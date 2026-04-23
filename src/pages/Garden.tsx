@@ -4,19 +4,63 @@ import LiveTicker from "@/components/blumes/LiveTicker";
 import PlantingZone from "@/components/blumes/PlantingZone";
 import WalletPanel from "@/components/blumes/WalletPanel";
 import SmartPreviewModal from "@/components/blumes/SmartPreviewModal";
-import { nfts, VIBE_LABEL, Vibe, Nft } from "@/data/nfts";
-import { useMemo, useState } from "react";
+import { VIBE_LABEL, Vibe, Nft, nfts as fallbackNfts } from "@/data/nfts";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
 type Mode = "vibe" | "color";
 
 const colorOf = (v: Vibe) => `hsl(var(--vibe-${v}))`;
 
 const Garden = () => {
+  const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
+
   const [mode, setMode] = useState<Mode>("vibe");
   const [active, setActive] = useState<Nft | null>(null);
+  const [owned, setOwned] = useState<Nft[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const owned = nfts.slice(0, 7);
+  useEffect(() => {
+    if (!authLoading && !user) navigate("/auth", { replace: true });
+  }, [user, authLoading, navigate]);
+
+  const load = useCallback(async () => {
+    if (!user) return;
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("nft_metadata")
+      .select("*")
+      .eq("owner_id", user.id)
+      .order("created_at", { ascending: false });
+
+    if (error || !data) {
+      setOwned([]);
+    } else {
+      setOwned(
+        data.map((row) => ({
+          id: row.id,
+          title: row.title,
+          artist: row.artist,
+          edition: row.edition,
+          price: row.price ?? "—",
+          image: row.image_url,
+          vibe: row.vibe as Vibe,
+          mood: row.mood,
+          species: row.species ?? "Untitled",
+          tags: row.tags ?? [],
+        }))
+      );
+    }
+    setLoading(false);
+  }, [user]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const groups = useMemo(() => {
     const by: Record<string, Nft[]> = {};
@@ -26,6 +70,16 @@ const Garden = () => {
     });
     return by;
   }, [owned]);
+
+  if (authLoading || !user) {
+    return (
+      <main className="min-h-screen bg-background flex items-center justify-center">
+        <span className="text-xs uppercase tracking-[0.32em] text-muted-foreground">
+          Cultivating…
+        </span>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -66,56 +120,69 @@ const Garden = () => {
             </span>
           </div>
 
-          <div className="space-y-12">
-            {Object.entries(groups).map(([vibe, items]) => (
-              <div key={vibe}>
-                <div className="flex items-center gap-4 mb-5">
-                  <span
-                    className="h-3 w-3 rounded-full shadow-hairline"
-                    style={{ background: colorOf(vibe as Vibe) }}
-                  />
-                  <h3 className="font-serif text-2xl tracking-tightest">
-                    {VIBE_LABEL[vibe as Vibe]}
-                  </h3>
-                  <span className="text-xs text-muted-foreground">{items.length}</span>
-                </div>
+          {loading ? (
+            <div className="py-20 text-center text-xs uppercase tracking-[0.32em] text-muted-foreground">
+              Loading garden…
+            </div>
+          ) : owned.length === 0 ? (
+            <div className="py-20 text-center">
+              <p className="font-serif text-3xl tracking-tightest">An empty garden.</p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Plant your first bloom below to begin.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-12">
+              {Object.entries(groups).map(([vibe, items]) => (
+                <div key={vibe}>
+                  <div className="flex items-center gap-4 mb-5">
+                    <span
+                      className="h-3 w-3 rounded-full shadow-hairline"
+                      style={{ background: colorOf(vibe as Vibe) }}
+                    />
+                    <h3 className="font-serif text-2xl tracking-tightest">
+                      {VIBE_LABEL[vibe as Vibe]}
+                    </h3>
+                    <span className="text-xs text-muted-foreground">{items.length}</span>
+                  </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-                  {items.map((n, i) => (
-                    <motion.button
-                      key={n.id}
-                      onClick={() => setActive(n)}
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.04, duration: 0.5 }}
-                      className="text-left group rounded-[var(--radius)] p-3 bg-background shadow-stone shadow-stone-hover"
-                    >
-                      <div
-                        className="aspect-square w-full rounded-md overflow-hidden mb-3"
-                        style={{ background: mode === "color" ? colorOf(n.vibe) : undefined }}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+                    {items.map((n, i) => (
+                      <motion.button
+                        key={n.id}
+                        onClick={() => setActive(n)}
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.04, duration: 0.5 }}
+                        className="text-left group rounded-[var(--radius)] p-3 bg-background shadow-stone shadow-stone-hover"
                       >
-                        <img
-                          src={n.image}
-                          alt={n.title}
-                          className={
-                            "h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] " +
-                            (mode === "color" ? "mix-blend-multiply" : "")
-                          }
-                        />
-                      </div>
-                      <p className="font-serif text-sm leading-tight tracking-tight truncate">{n.title}</p>
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mt-1 truncate">
-                        {n.species}
-                      </p>
-                    </motion.button>
-                  ))}
+                        <div
+                          className="aspect-square w-full rounded-md overflow-hidden mb-3"
+                          style={{ background: mode === "color" ? colorOf(n.vibe) : undefined }}
+                        >
+                          <img
+                            src={n.image}
+                            alt={n.title}
+                            className={
+                              "h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] " +
+                              (mode === "color" ? "mix-blend-multiply" : "")
+                            }
+                          />
+                        </div>
+                        <p className="font-serif text-sm leading-tight tracking-tight truncate">{n.title}</p>
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mt-1 truncate">
+                          {n.species}
+                        </p>
+                      </motion.button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           <div className="mt-20">
-            <PlantingZone />
+            <PlantingZone onPlanted={load} />
           </div>
         </div>
 
