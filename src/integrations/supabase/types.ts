@@ -14,7 +14,172 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      greenhouse_posts: {
+        Row: {
+          after_image_url: string | null
+          author_id: string
+          before_image_url: string | null
+          caption: string
+          created_at: string
+          id: string
+          image_url: string | null
+          nft_id: string | null
+          post_type: Database["public"]["Enums"]["post_type"]
+          storage_path: string | null
+          updated_at: string
+        }
+        Insert: {
+          after_image_url?: string | null
+          author_id: string
+          before_image_url?: string | null
+          caption: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          nft_id?: string | null
+          post_type?: Database["public"]["Enums"]["post_type"]
+          storage_path?: string | null
+          updated_at?: string
+        }
+        Update: {
+          after_image_url?: string | null
+          author_id?: string
+          before_image_url?: string | null
+          caption?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          nft_id?: string | null
+          post_type?: Database["public"]["Enums"]["post_type"]
+          storage_path?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "greenhouse_posts_nft_id_fkey"
+            columns: ["nft_id"]
+            isOneToOne: false
+            referencedRelation: "nft_metadata"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      nft_metadata: {
+        Row: {
+          artist: string
+          created_at: string
+          edition: string
+          id: string
+          image_url: string
+          mood: number
+          owner_id: string
+          price: string | null
+          species: string | null
+          storage_path: string | null
+          tags: string[]
+          title: string
+          updated_at: string
+          vibe: Database["public"]["Enums"]["vibe"]
+        }
+        Insert: {
+          artist: string
+          created_at?: string
+          edition?: string
+          id?: string
+          image_url: string
+          mood?: number
+          owner_id: string
+          price?: string | null
+          species?: string | null
+          storage_path?: string | null
+          tags?: string[]
+          title: string
+          updated_at?: string
+          vibe?: Database["public"]["Enums"]["vibe"]
+        }
+        Update: {
+          artist?: string
+          created_at?: string
+          edition?: string
+          id?: string
+          image_url?: string
+          mood?: number
+          owner_id?: string
+          price?: string | null
+          species?: string | null
+          storage_path?: string | null
+          tags?: string[]
+          title?: string
+          updated_at?: string
+          vibe?: Database["public"]["Enums"]["vibe"]
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          display_name: string | null
+          handle: string | null
+          id: string
+          updated_at: string
+          user_id: string
+          wallet_address: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          handle?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+          wallet_address?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          handle?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+          wallet_address?: string | null
+        }
+        Relationships: []
+      }
+      waters: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "waters_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "greenhouse_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +188,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      post_type: "story" | "wip"
+      vibe: "grounded" | "soft" | "electric" | "misty" | "sunlit"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +316,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      post_type: ["story", "wip"],
+      vibe: ["grounded", "soft", "electric", "misty", "sunlit"],
+    },
   },
 } as const
