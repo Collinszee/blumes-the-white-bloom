@@ -1,23 +1,16 @@
-import NftCard, { Nft } from "./NftCard";
-import nft1 from "@/assets/nft-1.jpg";
-import nft2 from "@/assets/nft-2.jpg";
-import nft3 from "@/assets/nft-3.jpg";
-import nft4 from "@/assets/nft-4.jpg";
-import nft5 from "@/assets/nft-5.jpg";
-import nft6 from "@/assets/nft-6.jpg";
-
-const nfts: Nft[] = [
-  { id: "1", title: "Lumen no. 04", artist: "Aiko Mori", edition: "Edition 1/8", price: "3.20 ETH", image: nft1 },
-  { id: "2", title: "Quiet Bloom", artist: "Henrik Vass", edition: "1/1", price: "8.40 ETH", image: nft2 },
-  { id: "3", title: "Soft Body", artist: "Sora Lin", edition: "Edition 2/12", price: "1.95 ETH", image: nft3 },
-  { id: "4", title: "Pressed Memory", artist: "Imogen Reed", edition: "1/1", price: "5.10 ETH", image: nft4 },
-  { id: "5", title: "Gradient Field", artist: "Noor Hassan", edition: "Open", price: "0.42 ETH", image: nft5 },
-  { id: "6", title: "Porcelain Study", artist: "Yves Caron", edition: "Edition 3/8", price: "2.75 ETH", image: nft6 },
-];
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { nfts, Nft } from "@/data/nfts";
+import SmartPreviewModal from "./SmartPreviewModal";
 
 const filters = ["All", "Photography", "Generative", "Sculpture", "Botanical", "1/1"];
 
 const Gallery = () => {
+  const [filter, setFilter] = useState("All");
+  const [active, setActive] = useState<Nft | null>(null);
+
+  const visible = filter === "All" ? nfts : nfts.filter((n) => n.tags.includes(filter));
+
   return (
     <section id="explore" className="relative bg-background py-32">
       <div className="container">
@@ -36,15 +29,15 @@ const Gallery = () => {
           </p>
         </div>
 
-        {/* Filter row */}
         <div className="flex flex-wrap gap-2 mb-12">
-          {filters.map((f, i) => (
+          {filters.map((f) => (
             <button
               key={f}
+              onClick={() => setFilter(f)}
               className={
                 "h-10 px-5 rounded-full text-sm transition-all " +
-                (i === 0
-                  ? "bg-primary text-primary-foreground"
+                (filter === f
+                  ? "bg-primary text-primary-foreground shadow-stone"
                   : "shadow-hairline hover:bg-accent")
               }
             >
@@ -54,8 +47,56 @@ const Gallery = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-          {nfts.map((nft, i) => (
-            <NftCard key={nft.id} nft={nft} index={i} />
+          {visible.map((nft, i) => (
+            <motion.button
+              key={nft.id}
+              onClick={() => setActive(nft)}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.7, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -10 }}
+              className="text-left group relative bg-card rounded-lg p-5 transition-shadow duration-500 ease-out shadow-soft hover:shadow-lift cursor-pointer"
+            >
+              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-md bg-muted">
+                <img
+                  src={nft.image}
+                  alt={`${nft.title} by ${nft.artist}`}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                />
+                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-background/90 backdrop-blur text-[10px] uppercase tracking-[0.2em] text-foreground shadow-hairline">
+                  {nft.edition}
+                </div>
+              </div>
+
+              <div className="pt-5 flex items-end justify-between gap-4">
+                <div className="min-w-0">
+                  <h3 className="font-serif text-xl leading-tight tracking-tight truncate">
+                    {nft.title}
+                  </h3>
+                  <p className="mt-1 text-xs text-muted-foreground truncate">
+                    by {nft.artist}
+                  </p>
+                </div>
+                <div className="text-right shrink-0">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                    Floor
+                  </p>
+                  <p className="font-sans text-sm font-medium tabular-nums">
+                    {nft.price}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-4 overflow-hidden">
+                <div className="translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out">
+                  <span className="block w-full h-10 rounded-full bg-primary text-primary-foreground text-xs tracking-wide leading-10 text-center shadow-stone">
+                    Smart Preview
+                  </span>
+                </div>
+              </div>
+            </motion.button>
           ))}
         </div>
 
@@ -65,6 +106,8 @@ const Gallery = () => {
           </button>
         </div>
       </div>
+
+      <SmartPreviewModal nft={active} onOpenChange={(o) => !o && setActive(null)} />
     </section>
   );
 };
