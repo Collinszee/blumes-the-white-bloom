@@ -47,6 +47,15 @@
     --shadow-soft: 0 8px 30px -12px hsl(0 0% 0% / 0.08);
     --shadow-float: 0 20px 60px -20px hsl(0 0% 0% / 0.12);
     --shadow-lift: 0 40px 80px -24px hsl(0 0% 0% / 0.18), 0 12px 24px -12px hsl(0 0% 0% / 0.06);
+    /* Polished white stone — soft outer + inner glow */
+    --shadow-stone: 0 1px 0 0 hsl(0 0% 100%) inset, 0 -1px 2px 0 hsl(0 0% 0% / 0.04) inset, 0 8px 24px -10px hsl(0 0% 0% / 0.10), 0 0 0 1px hsl(0 0% 92%);
+
+    /* Vibe palette — used as soft chips for Garden grouping. Whites only with tinted glows. */
+    --vibe-grounded: 28 30% 88%;
+    --vibe-soft: 340 35% 92%;
+    --vibe-electric: 220 70% 92%;
+    --vibe-misty: 180 25% 92%;
+    --vibe-sunlit: 45 60% 90%;
 
     /* Type tokens */
     --font-serif: "Fraunces", "Times New Roman", serif;
@@ -106,6 +115,40 @@
   .shadow-lift {
     box-shadow: var(--shadow-lift);
   }
+  .shadow-stone {
+    box-shadow: var(--shadow-stone);
+  }
+  .shadow-stone-hover {
+    transition: box-shadow 0.4s ease, transform 0.3s ease;
+  }
+  .shadow-stone-hover:hover {
+    box-shadow: 0 1px 0 0 hsl(0 0% 100%) inset, 0 -1px 2px 0 hsl(0 0% 0% / 0.04) inset,
+      0 14px 36px -10px hsl(0 0% 0% / 0.16), 0 0 0 1px hsl(0 0% 90%);
+    transform: translateY(-1px);
+  }
+
+  /* Pearlescent pulse — for Water button */
+  @keyframes pearl-pulse {
+    0% { box-shadow: 0 0 0 0 hsl(220 80% 80% / 0.5), 0 0 0 0 hsl(340 70% 85% / 0.4); }
+    60% { box-shadow: 0 0 0 28px hsl(220 80% 80% / 0), 0 0 0 40px hsl(340 70% 85% / 0); }
+    100% { box-shadow: 0 0 0 0 hsl(220 80% 80% / 0), 0 0 0 0 hsl(340 70% 85% / 0); }
+  }
+  .animate-pearl { animation: pearl-pulse 1.2s ease-out; }
+
+  /* Petal fall */
+  @keyframes petal-fall {
+    0% { transform: translate(0, -8px) rotate(0deg); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translate(var(--tx, 30px), 80px) rotate(180deg); opacity: 0; }
+  }
+  .animate-petal { animation: petal-fall 1.4s cubic-bezier(0.4, 0, 0.6, 1) forwards; }
+
+  /* Ticker */
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-ticker { animation: ticker 50s linear infinite; }
 
   .text-balance {
     text-wrap: balance;
