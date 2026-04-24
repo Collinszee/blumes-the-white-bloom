@@ -1,5 +1,4 @@
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Nft } from "@/data/nfts";
 
 interface Props {
@@ -14,10 +13,10 @@ const SmartPreviewModal = ({ nft, onOpenChange }: Props) => {
         className="max-w-4xl border-0 bg-background p-0 shadow-lift overflow-hidden rounded-[var(--radius)]"
         // dim backdrop to 40% — overlay handled via global override below
       >
-        <VisuallyHidden>
+        <span className="sr-only">
           <DialogTitle>{nft?.title}</DialogTitle>
           <DialogDescription>{nft?.species}</DialogDescription>
-        </VisuallyHidden>
+        </span>
         {nft && (
           <div className="grid md:grid-cols-[1.2fr_1fr]">
             <div className="bg-muted aspect-square md:aspect-auto">
