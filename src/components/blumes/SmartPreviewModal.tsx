@@ -26,7 +26,7 @@ const SmartPreviewModal = ({ nft, onOpenChange }: Props) => {
             <div className="p-10 flex flex-col justify-between gap-10">
               <div>
                 <span className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">
-                  Species · {nft.species}
+                  Collection · {nft.species}
                 </span>
                 <h2 className="font-serif text-4xl mt-4 tracking-tightest leading-[1.05]">
                   {nft.title}
@@ -47,14 +47,14 @@ const SmartPreviewModal = ({ nft, onOpenChange }: Props) => {
                     <p className="mt-1 capitalize">{nft.vibe}</p>
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">Cultivation Cost</p>
+                    <p className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">Service Fee</p>
                     <p className="mt-1 tabular-nums">0.0021 ETH</p>
                   </div>
                 </div>
               </div>
 
-              <button className="h-12 w-full rounded-full bg-primary text-primary-foreground text-sm tracking-wide shadow-stone shadow-stone-hover">
-                Cultivate
+              <button className="h-12 w-full rounded-full bg-primary text-primary-foreground text-sm tracking-wide shadow-stone shadow-stone-hover active:scale-[0.98] transition-transform">
+                Buy
               </button>
             </div>
           </div>

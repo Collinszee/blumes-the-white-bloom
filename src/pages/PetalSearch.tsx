@@ -19,12 +19,12 @@ const PetalSearch = () => {
   return (
     <main className="min-h-screen bg-background text-foreground">
       <Nav />
-      <section className="container pt-32 pb-10">
+      <section className="container pt-28 md:pt-32 pb-8 md:pb-10">
         <span className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">
-          Discover · Petal Search
+          Discover · Marketplace
         </span>
-        <h1 className="font-serif text-6xl md:text-7xl tracking-tightest leading-[0.95] mt-4">
-          Find by feeling
+        <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl tracking-tightest leading-[0.95] mt-3 md:mt-4">
+          Marketplace
         </h1>
         <p className="text-muted-foreground mt-4 max-w-md">
           Skip categories. Pull the spectrum and watch the garden re-arrange in real time.
@@ -42,7 +42,7 @@ const PetalSearch = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 lg:gap-8">
           <AnimatePresence mode="popLayout">
             {filtered.map((n, i) => (
               <motion.button
@@ -52,25 +52,26 @@ const PetalSearch = () => {
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.96 }}
+                whileTap={{ scale: 0.98 }}
                 transition={{ duration: 0.45, delay: i * 0.04 }}
-                className="text-left group rounded-[var(--radius)] p-4 bg-background shadow-stone shadow-stone-hover"
+                className="text-center sm:text-left group rounded-[var(--radius)] p-3 sm:p-4 bg-background shadow-stone shadow-stone-hover active:shadow-float"
               >
                 <div className="aspect-[4/5] overflow-hidden rounded-md bg-muted">
                   <img
                     src={n.image}
                     alt={n.title}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] group-active:scale-[1.02]"
                   />
                 </div>
-                <div className="pt-4 flex items-end justify-between gap-3">
+                <div className="pt-3 sm:pt-4 sm:flex sm:items-end sm:justify-between sm:gap-3">
                   <div className="min-w-0">
-                    <h3 className="font-serif text-lg leading-tight tracking-tight truncate">{n.title}</h3>
-                    <p className="text-[11px] text-muted-foreground truncate mt-1">
+                    <h3 className="font-serif text-[13px] sm:text-lg leading-tight tracking-tight truncate">{n.title}</h3>
+                    <p className="text-[10px] sm:text-[11px] text-muted-foreground truncate mt-1">
                       {n.species} · mood {n.mood}
                     </p>
                   </div>
                   <span
-                    className="h-2.5 w-2.5 rounded-full shadow-hairline shrink-0"
+                    className="hidden sm:block h-2.5 w-2.5 rounded-full shadow-hairline shrink-0"
                     style={{ background: `hsl(var(--vibe-${n.vibe}))` }}
                   />
                 </div>

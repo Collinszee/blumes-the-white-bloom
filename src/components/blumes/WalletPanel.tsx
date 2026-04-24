@@ -1,6 +1,6 @@
 const rows = [
   { label: "Item", value: "Lumen no. 04" },
-  { label: "Cultivation Cost", value: "0.0021 ETH" },
+  { label: "Service Fee", value: "0.0021 ETH" },
   { label: "Total", value: "3.2021 ETH" },
 ];
 

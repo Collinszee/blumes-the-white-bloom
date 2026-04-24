@@ -13,7 +13,7 @@ const LiveTicker = () => {
   const loop = [...items, ...items];
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-40 h-9 overflow-hidden bg-background/80 backdrop-blur-xl"
+      className="fixed left-0 right-0 z-40 h-9 overflow-hidden bg-background/80 backdrop-blur-xl bottom-16 md:bottom-0"
       style={{ borderTop: "1px solid hsl(var(--border))" }}
     >
       <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center gap-2 pr-6 bg-background/90">

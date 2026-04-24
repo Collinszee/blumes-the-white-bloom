@@ -10,6 +10,7 @@ import Garden from "./pages/Garden.tsx";
 import Greenhouse from "./pages/Greenhouse.tsx";
 import PetalSearch from "./pages/PetalSearch.tsx";
 import Auth from "./pages/Auth.tsx";
+import BottomNav from "./components/blumes/BottomNav.tsx";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <BottomNav />
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
