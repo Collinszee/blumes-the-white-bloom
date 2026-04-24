@@ -1,5 +1,4 @@
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Nft } from "@/data/nfts";
 
 interface Props {
@@ -14,10 +13,10 @@ const SmartPreviewModal = ({ nft, onOpenChange }: Props) => {
         className="max-w-4xl border-0 bg-background p-0 shadow-lift overflow-hidden rounded-[var(--radius)]"
         // dim backdrop to 40% — overlay handled via global override below
       >
-        <VisuallyHidden>
+        <span className="sr-only">
           <DialogTitle>{nft?.title}</DialogTitle>
           <DialogDescription>{nft?.species}</DialogDescription>
-        </VisuallyHidden>
+        </span>
         {nft && (
           <div className="grid md:grid-cols-[1.2fr_1fr]">
             <div className="bg-muted aspect-square md:aspect-auto">
@@ -26,7 +25,7 @@ const SmartPreviewModal = ({ nft, onOpenChange }: Props) => {
             <div className="p-10 flex flex-col justify-between gap-10">
               <div>
                 <span className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">
-                  Species · {nft.species}
+                  Collection · {nft.species}
                 </span>
                 <h2 className="font-serif text-4xl mt-4 tracking-tightest leading-[1.05]">
                   {nft.title}
@@ -47,14 +46,14 @@ const SmartPreviewModal = ({ nft, onOpenChange }: Props) => {
                     <p className="mt-1 capitalize">{nft.vibe}</p>
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">Cultivation Cost</p>
+                    <p className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">Service Fee</p>
                     <p className="mt-1 tabular-nums">0.0021 ETH</p>
                   </div>
                 </div>
               </div>
 
-              <button className="h-12 w-full rounded-full bg-primary text-primary-foreground text-sm tracking-wide shadow-stone shadow-stone-hover">
-                Cultivate
+              <button className="h-12 w-full rounded-full bg-primary text-primary-foreground text-sm tracking-wide shadow-stone shadow-stone-hover active:scale-[0.98] transition-transform">
+                Buy
               </button>
             </div>
           </div>

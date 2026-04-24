@@ -3,9 +3,9 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
 const links = [
-  { to: "/petal-search", label: "Petal Search" },
-  { to: "/greenhouse", label: "Greenhouse" },
-  { to: "/garden", label: "Garden" },
+  { to: "/petal-search", label: "Marketplace" },
+  { to: "/greenhouse", label: "Community Feed" },
+  { to: "/garden", label: "My Collection" },
 ];
 
 const Nav = () => {
@@ -69,7 +69,7 @@ const Nav = () => {
                 onClick={onWallet}
                 className="h-10 px-5 inline-flex items-center text-sm rounded-full bg-primary text-primary-foreground shadow-stone shadow-stone-hover"
               >
-                Connect wallet
+                Connect Wallet
               </button>
             </>
           )}

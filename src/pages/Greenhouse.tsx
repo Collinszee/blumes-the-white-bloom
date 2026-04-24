@@ -36,15 +36,15 @@ const Greenhouse = () => {
   return (
     <main className="min-h-screen bg-background text-foreground">
       <Nav />
-      <section className="container pt-32 pb-12 max-w-2xl">
+      <section className="container pt-28 md:pt-32 pb-8 md:pb-12 max-w-2xl">
         <span className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">
-          Social · Greenhouse
+          Social · Community
         </span>
-        <h1 className="font-serif text-5xl md:text-6xl tracking-tightest leading-[0.95] mt-4">
-          The Greenhouse
+        <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl tracking-tightest leading-[0.95] mt-3 md:mt-4">
+          Community Feed
         </h1>
-        <p className="text-muted-foreground mt-4">
-          Micro-stories from artists you cultivate. Quiet, slow, alive.
+        <p className="text-sm md:text-base text-muted-foreground mt-4">
+          Micro-stories from artists you follow. Quiet, slow, alive.
         </p>
       </section>
 

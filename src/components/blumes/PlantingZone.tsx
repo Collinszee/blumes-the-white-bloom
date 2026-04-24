@@ -104,9 +104,9 @@ const PlantingZone = ({ onPlanted }: Props) => {
             <path d="M12 4v12m0 0l-5-5m5 5l5-5M5 20h14" />
           </svg>
         </motion.div>
-        <h3 className="font-serif text-3xl tracking-tightest">The Planting Zone</h3>
+        <h3 className="font-serif text-3xl tracking-tightest">Mint New Artwork</h3>
         <p className="mt-3 text-sm text-muted-foreground max-w-md mx-auto">
-          Drop your image to plant a new bloom. We'll handle the rest —
+          Drop your image to mint a new piece. We'll handle the rest —
           no chains, no gas, no friction.
         </p>
 
@@ -184,9 +184,9 @@ const PlantingZone = ({ onPlanted }: Props) => {
             <button
               onClick={plant}
               disabled={planting}
-              className="h-12 w-full rounded-full bg-primary text-primary-foreground text-sm shadow-stone shadow-stone-hover disabled:opacity-60"
+              className="h-12 w-full rounded-full bg-primary text-primary-foreground text-sm shadow-stone shadow-stone-hover disabled:opacity-60 active:scale-[0.98] transition-transform"
             >
-              {planting ? "Planting…" : user ? "Plant bloom" : "Sign in to plant"}
+              {planting ? "Minting…" : user ? "Mint Artwork" : "Sign in to mint"}
             </button>
           </motion.div>
         )}

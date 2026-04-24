@@ -84,15 +84,15 @@ const Garden = () => {
   return (
     <main className="min-h-screen bg-background text-foreground">
       <Nav />
-      <section className="container pt-32 pb-12">
+      <section className="container pt-28 md:pt-32 pb-8 md:pb-12">
         <span className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">
-          Personal · Garden
+          Personal · Collection
         </span>
-        <div className="mt-4 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <h1 className="font-serif text-6xl md:text-7xl tracking-tightest leading-[0.95]">
-            Your Garden
+        <div className="mt-3 md:mt-4 flex flex-col md:flex-row md:items-end md:justify-between gap-4 md:gap-6">
+          <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl tracking-tightest leading-[0.95]">
+            My Collection
           </h1>
-          <p className="md:max-w-sm text-muted-foreground">
+          <p className="md:max-w-sm text-sm md:text-base text-muted-foreground">
             A living index of what you've collected — sorted by feeling, not by date.
           </p>
         </div>
@@ -146,15 +146,16 @@ const Garden = () => {
                     <span className="text-xs text-muted-foreground">{items.length}</span>
                   </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
                     {items.map((n, i) => (
                       <motion.button
                         key={n.id}
                         onClick={() => setActive(n)}
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
+                        whileTap={{ scale: 0.98 }}
                         transition={{ delay: i * 0.04, duration: 0.5 }}
-                        className="text-left group rounded-[var(--radius)] p-3 bg-background shadow-stone shadow-stone-hover"
+                        className="text-center sm:text-left group rounded-[var(--radius)] p-3 bg-background shadow-stone shadow-stone-hover active:shadow-float"
                       >
                         <div
                           className="aspect-square w-full rounded-md overflow-hidden mb-3"
@@ -164,12 +165,12 @@ const Garden = () => {
                             src={n.image}
                             alt={n.title}
                             className={
-                              "h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] " +
+                              "h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] group-active:scale-[1.02] " +
                               (mode === "color" ? "mix-blend-multiply" : "")
                             }
                           />
                         </div>
-                        <p className="font-serif text-sm leading-tight tracking-tight truncate">{n.title}</p>
+                        <p className="font-serif text-[13px] sm:text-sm leading-tight tracking-tight truncate">{n.title}</p>
                         <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mt-1 truncate">
                           {n.species}
                         </p>
